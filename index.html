@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>美術館驚魂夜｜多語言分享</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  font-family: Arial, sans-serif;
+  color: #202b3c;
+  background: linear-gradient(135deg, #edf4ff, #fff5ef);
+}
+
+main {
+  width: 100%;
+  max-width: 480px;
+  padding: 28px;
+  background: white;
+  border-radius: 22px;
+  box-shadow: 0 10px 40px #23344a18;
+}
+
+.logo {
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: #647084;
+}
+
+h1 {
+  font-size: 26px;
+  line-height: 1.4;
+}
+
+p {
+  line-height: 1.7;
+  color: #647084;
+}
+
+.languages {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+button {
+  padding: 15px 10px;
+  border: 1px solid #dce3ed;
+  border-radius: 12px;
+  background: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #eef5ff;
+  border-color: #1877f2;
+}
+
+.note {
+  margin-top: 22px;
+  padding: 13px;
+  border-radius: 10px;
+  background: #f5f7fa;
+  color: #647084;
+  font-size: 13px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+#tag {
+  color: #1877f2;
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
+@media (max-width: 350px) {
+  .languages {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+<main>
+  <div class="logo">🎂 DIY EXPERIENCE</div>
+
+  <h1 id="heading">美術館驚魂夜｜選擇語言</h1>
+
+  <p id="intro">
+    選擇你慣用的語言，前往 Facebook 分享活動！
+  </p>
+
+  <div class="languages">
+    <button onclick="share('zh')">🇹🇼 繁體中文</button>
+    <button onclick="share('en')">🇺🇸 English</button>
+    <button onclick="share('ja')">🇯🇵 日本語</button>
+    <button onclick="share('ko')">🇰🇷 한국어</button>
+    <button onclick="share('th')">🇹🇭 ภาษาไทย</button>
+    <button onclick="share('vi')">🇻🇳 Tiếng Việt</button>
+  </div>
+
+  <div class="note">
+    <div id="hint">
+      分享前請確認 Facebook 視窗中的標籤，再自行發布。
+    </div>
+    <p id="tag">#美術館驚魂夜1001上市</p>
+  </div>
+</main>
+
+<script>
+const activityUrl =
+  "https://www.mydiybc.com/home/menu?id=34248e13-3eac-4886-91cc-35c5a933a57f";
+
+const languages = {
+  zh: {
+    code: "zh-Hant",
+    title: "美術館驚魂夜｜分享活動",
+    intro: "一起分享美術館驚魂夜1001上市活動！",
+    tag: "#美術館驚魂夜1001上市",
+    hint: "點擊後將前往 Facebook，請確認標籤並自行發布。"
+  },
+  en: {
+    code: "en",
+    title: "Museum Nightmare | Share the Event",
+    intro: "Join us in sharing the Museum Nightmare 1001 launch event!",
+    tag: "#MuseumNightmare1001",
+    hint: "Facebook will open. Check the hashtag before publishing."
+  },
+  ja: {
+    code: "ja",
+    title: "美術館の恐怖の夜｜イベントをシェア",
+    intro: "美術館驚魂夜1001の発売イベントをシェアしましょう！",
+    tag: "#美術館の恐怖の夜",
+    hint: "Facebookでハッシュタグを確認してから投稿してください。"
+  },
+  ko: {
+    code: "ko",
+    title: "미술관의 공포의 밤 | 이벤트 공유",
+    intro: "미술관의 공포의 밤 1001 출시 이벤트를 공유해 보세요!",
+    tag: "#미술관의공포의밤",
+    hint: "Facebook에서 해시태그를 확인한 후 게시해 주세요."
+  },
+  th: {
+    code: "th",
+    title: "คืนสยองในพิพิธภัณฑ์ | แชร์กิจกรรม",
+    intro: "มาร่วมแชร์กิจกรรมเปิดตัว Museum Nightmare 1001!",
+    tag: "#คืนสยองในพิพิธภัณฑ์",
+    hint: "ตรวจสอบแฮชแท็กบน Facebook ก่อนเผยแพร่"
+  },
+  vi: {
+    code: "vi",
+    title: "Đêm Kinh Hoàng Tại Bảo Tàng | Chia sẻ",
+    intro: "Cùng chia sẻ sự kiện ra mắt Museum Nightmare 1001!",
+    tag: "#DemKinhHoangTaiBaoTang",
+    hint: "Vui lòng kiểm tra hashtag trên Facebook trước khi đăng."
+  }
+};
+
+function share(key) {
+  const item = languages[key];
+
+  document.documentElement.lang = item.code;
+  document.getElementById("heading").textContent = item.title;
+  document.getElementById("intro").textContent = item.intro;
+  document.getElementById("tag").textContent = item.tag;
+  document.getElementById("hint").textContent = item.hint;
+
+  const shareUrl = new URL(
+    "https://www.facebook.com/sharer/sharer.php"
+  );
+
+  shareUrl.searchParams.set("u", activityUrl);
+  shareUrl.searchParams.set("hashtag", item.tag);
+
+  window.location.href = shareUrl.toString();
+}
+</script>
+</body>
+</html>
