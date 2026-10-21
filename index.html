@@ -5,11 +5,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>美術館驚魂夜｜多語言分享</title>
-
 <style>
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -37,15 +34,8 @@ main {
   color: #647084;
 }
 
-h1 {
-  font-size: 26px;
-  line-height: 1.4;
-}
-
-p {
-  line-height: 1.7;
-  color: #647084;
-}
+h1 { font-size: 26px; line-height: 1.4; }
+p { line-height: 1.7; color: #647084; }
 
 .languages {
   display: grid;
@@ -62,7 +52,6 @@ button {
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  transition: 0.2s;
 }
 
 button:hover {
@@ -87,23 +76,22 @@ button:hover {
   margin-bottom: 0;
 }
 
+#status {
+  margin-top: 12px;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
 @media (max-width: 350px) {
-  .languages {
-    grid-template-columns: 1fr;
-  }
+  .languages { grid-template-columns: 1fr; }
 }
 </style>
 </head>
-
 <body>
 <main>
   <div class="logo">🎂 DIY EXPERIENCE</div>
-
   <h1 id="heading">美術館驚魂夜｜選擇語言</h1>
-
-  <p id="intro">
-    選擇你慣用的語言，前往 Facebook 分享活動！
-  </p>
+  <p id="intro">選擇你慣用的語言，分享活動！</p>
 
   <div class="languages">
     <button onclick="share('zh')">🇹🇼 繁體中文</button>
@@ -115,10 +103,9 @@ button:hover {
   </div>
 
   <div class="note">
-    <div id="hint">
-      分享前請確認 Facebook 視窗中的標籤，再自行發布。
-    </div>
+    <div id="hint">選擇語言後，可使用手機分享選單或開啟 Facebook。</div>
     <p id="tag">#美術館驚魂夜1001上市</p>
+    <div id="status" role="status" aria-live="polite"></div>
   </div>
 </main>
 
@@ -132,62 +119,86 @@ const languages = {
     title: "美術館驚魂夜｜分享活動",
     intro: "一起分享美術館驚魂夜1001上市活動！",
     tag: "#美術館驚魂夜1001上市",
-    hint: "點擊後將前往 Facebook，請確認標籤並自行發布。"
+    hint: "分享活動網址，並在 Facebook 貼文中加入下方標籤。"
   },
   en: {
     code: "en",
     title: "Museum Nightmare | Share the Event",
     intro: "Join us in sharing the Museum Nightmare 1001 launch event!",
     tag: "#MuseumNightmare1001",
-    hint: "Facebook will open. Check the hashtag before publishing."
+    hint: "Share the event link and add the hashtag to your Facebook post."
   },
   ja: {
     code: "ja",
     title: "美術館の恐怖の夜｜イベントをシェア",
     intro: "美術館驚魂夜1001の発売イベントをシェアしましょう！",
     tag: "#美術館の恐怖の夜",
-    hint: "Facebookでハッシュタグを確認してから投稿してください。"
+    hint: "イベントのリンクをシェアし、ハッシュタグを追加してください。"
   },
   ko: {
     code: "ko",
     title: "미술관의 공포의 밤 | 이벤트 공유",
     intro: "미술관의 공포의 밤 1001 출시 이벤트를 공유해 보세요!",
     tag: "#미술관의공포의밤",
-    hint: "Facebook에서 해시태그를 확인한 후 게시해 주세요."
+    hint: "이벤트 링크를 공유하고 게시물에 해시태그를 추가해 주세요."
   },
   th: {
     code: "th",
     title: "คืนสยองในพิพิธภัณฑ์ | แชร์กิจกรรม",
     intro: "มาร่วมแชร์กิจกรรมเปิดตัว Museum Nightmare 1001!",
     tag: "#คืนสยองในพิพิธภัณฑ์",
-    hint: "ตรวจสอบแฮชแท็กบน Facebook ก่อนเผยแพร่"
+    hint: "แชร์ลิงก์กิจกรรมและเพิ่มแฮชแท็กในโพสต์ Facebook"
   },
   vi: {
     code: "vi",
     title: "Đêm Kinh Hoàng Tại Bảo Tàng | Chia sẻ",
     intro: "Cùng chia sẻ sự kiện ra mắt Museum Nightmare 1001!",
     tag: "#DemKinhHoangTaiBaoTang",
-    hint: "Vui lòng kiểm tra hashtag trên Facebook trước khi đăng."
+    hint: "Chia sẻ liên kết sự kiện và thêm hashtag vào bài đăng Facebook."
   }
 };
 
-function share(key) {
-  const item = languages[key];
-
+function showLanguage(item) {
   document.documentElement.lang = item.code;
   document.getElementById("heading").textContent = item.title;
   document.getElementById("intro").textContent = item.intro;
   document.getElementById("tag").textContent = item.tag;
   document.getElementById("hint").textContent = item.hint;
+  document.getElementById("status").textContent = "";
+}
 
+async function share(key) {
+  const item = languages[key];
+  showLanguage(item);
+
+  // 手機優先使用系統分享選單。
+  // 分享內容包含活動網址與對應語言標籤。
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: item.title,
+        text: item.tag,
+        url: activityUrl
+      });
+      document.getElementById("status").textContent =
+        "已開啟分享功能；請確認分享目的地並自行發布。";
+      return;
+    } catch (error) {
+      // 使用者取消分享時，不要擅自跳轉。
+      if (error && error.name === "AbortError") return;
+      document.getElementById("status").textContent =
+        "無法開啟系統分享選單，請使用下方 Facebook 分享連結。";
+    }
+  }
+
+  // 不支援系統分享的瀏覽器，使用 Facebook 分享頁。
   const shareUrl = new URL(
     "https://www.facebook.com/sharer/sharer.php"
   );
-
   shareUrl.searchParams.set("u", activityUrl);
   shareUrl.searchParams.set("hashtag", item.tag);
 
-  window.location.href = shareUrl.toString();
+  window.location.assign(shareUrl.toString());
 }
 </script>
 </body>
